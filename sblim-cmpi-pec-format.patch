@@ -1,0 +1,11 @@
+--- sblim-cmpi-pec-1.0.1/provider/pec_plugin_indication.c.orig	2009-03-14 01:24:55.000000000 +0100
++++ sblim-cmpi-pec-1.0.1/provider/pec_plugin_indication.c	2015-01-11 17:15:25.959217867 +0100
+@@ -138,7 +138,7 @@
+     int opnarglen = strlen(PECPLUGIN_pluginIndicationIDArray[index].optAndArgs) + 1;    
+     if (opnarglen < MAX_STR_LEN)
+     {
+-        snprintf(optionsAndArguments, opnarglen, PECPLUGIN_pluginIndicationIDArray[index].optAndArgs);
++        snprintf(optionsAndArguments, opnarglen, "%s", PECPLUGIN_pluginIndicationIDArray[index].optAndArgs);
+     }
+ }
+ 

@@ -1,0 +1,88 @@
+--- sblim-cmpi-pec-1.0.1/client/Makefile.am.orig	2010-01-06 23:14:28.000000000 +0100
++++ sblim-cmpi-pec-1.0.1/client/Makefile.am	2015-01-11 17:18:21.232543847 +0100
+@@ -1,39 +1,39 @@
+ EXTRA_DIST=
+-EXTRA_DIST+=pec.conf pec_plugin.conf peclogiterativetest.sh pecloader.pl
++EXTRA_DIST+= pec_plugin.conf peclogiterativetest.sh pecloader.pl
++sysconf_DATA = pec.conf
+ bin_PROGRAMS = pectest peciterativetest pecconfigure
+ 
++CIMCLIENT_CFLAGS = -I/usr/include/CimClientLib
++CIMCLIENT_LIBS = -lcmpisfcc -lcimcclient
++
+ pectest_SOURCES = pectest.c
+ 
+-pectest_LDADD = /usr/local/lib/libcmpisfcc.a /usr/local/lib/libcimcclient.a libpec_configurationmanagement.la
++pectest_LDADD = $(CIMCLIENT_LIBS) libpec_configurationmanagement.la
+ 
+ pectest_LDFLAGS = -ldl
+ 
+-pectest_CFLAGS = -I/usr/local/include/CimClientLib
++pectest_CFLAGS = $(CIMCLIENT_CFLAGS)
+ 
+ 
+ peciterativetest_SOURCES = peciterativetest.c
+ 
+-peciterativetest_LDADD = /usr/local/lib/libcmpisfcc.a /usr/local/lib/libcimcclient.a libpec_configurationmanagement.la
++peciterativetest_LDADD = $(CIMCLIENT_LIBS) libpec_configurationmanagement.la
+ 
+ peciterativetest_LDFLAGS = -ldl
+ 
+-peciterativetest_CFLAGS = -I/usr/local/include/CimClientLib
++peciterativetest_CFLAGS = $(CIMCLIENT_CFLAGS)
+ 
+ 
+ pecconfigure_SOURCES = pecconfigure.c
+ 
+-pecconfigure_LDADD = /usr/local/lib/libcmpisfcc.a /usr/local/lib/libcimcclient.a libpec_configurationmanagement.la
++pecconfigure_LDADD = $(CIMCLIENT_LIBS) libpec_configurationmanagement.la
+ 
+ pecconfigure_LDFLAGS = -ldl
+ 
+-pecconfigure_CFLAGS = -I/usr/local/include/CimClientLib
++pecconfigure_CFLAGS = $(CIMCLIENT_CFLAGS)
+ 
+ noinst_LTLIBRARIES = libpec_configurationmanagement.la
+ 
+ libpec_configurationmanagement_la_SOURCES = libpec_configurationmanagement.c libpec_configurationmanagement.h
+ 
+ libpec_configurationmanagement_la_CFLAGS = -D'INSTDIR="$(prefix)"'
+-
+-install:
+-	mkdir -p ${prefix}/etc
+-	cp pec.conf ${prefix}/etc
+--- sblim-cmpi-pec-1.0.1/provider/Makefile.am.orig	2010-01-06 23:14:28.000000000 +0100
++++ sblim-cmpi-pec-1.0.1/provider/Makefile.am	2015-01-11 16:37:17.259313915 +0100
+@@ -1,25 +1,23 @@
+ EXTRA_DIST=
+ EXTRA_DIST+=pec_plugin_indication.reg
+-lib_LTLIBRARIES = libpec_plugin_indication.la
++providerdir = $(libdir)/cmpi
++provider_LTLIBRARIES = libpec_plugin_indication.la
++
++CMPI_CFLAGS = -I/usr/include/cmpi
+ 
+ libpec_plugin_indication_la_SOURCES = pec_plugin_indication.c pec_plugin_indication.h
+ 
+ libpec_plugin_indication_la_LIBADD = libpec_plugins.la
++libpec_plugin_indication_la_LDFLAGS = -avoid-version
+ 
+-libpec_plugin_indication_la_CFLAGS = -D'DATADIR="$(datadir)"' -I/usr/local/include/cmpi
++libpec_plugin_indication_la_CFLAGS = -D'DATADIR="$(datadir)"' $(CMPI_CFLAGS)
+ 
+ noinst_LTLIBRARIES = libpec_plugins.la
+ 
+ libpec_plugins_la_SOURCES = pec_plugins.c pec_plugins.h
+ 
+-libpec_plugins_la_CFLAGS = -I/usr/local/include/cmpi 
++libpec_plugins_la_CFLAGS = $(CMPI_CFLAGS)
+ 
+ if DEBUG
+ libpec_plugins_la_CFLAGS += -D'DEBUG'
+ endif
+-
+-install:
+-	mkdir -p ${prefix}/lib/cmpi
+-	cp .libs/libpec_plugin_indication.so  ${prefix}/lib/cmpi
+-
+-
