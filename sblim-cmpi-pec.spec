@@ -17,7 +17,6 @@ BuildRequires:	libtool
 BuildRequires:	sblim-cmpi-base-devel
 BuildRequires:	sblim-cmpi-devel
 BuildRequires:	sblim-sfcc-devel >= 2.1.0
-Requires:	%{name}-libs = %{version}-%{release}
 Requires:	sblim-cmpi-base
 Requires:	sblim-sfcb >= 1.3.2
 Requires:	sblim-sfcb-schema >= 2.15
